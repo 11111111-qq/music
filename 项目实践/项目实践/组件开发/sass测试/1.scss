@@ -1,0 +1,129 @@
+// 变量区
+$b1: rgba(0, 0, 0, .2);
+$bl:border-left;
+$w:300px;
+$c:32;
+@mixin left ($n:10px) {
+    padding-left: $n; //引用变量
+}
+
+//定义数组
+$icons: a b c d;
+//数组的遍历
+@each $icon in $icons {
+    .#{$icon}::before {
+        content: '#{$icon}';
+    }
+}
+
+//定义对象
+$colors: (3:red, 4:green, 5:yellow);
+//兼容前缀
+@mixin rounded($vert, $horz, $radius: 10px) {
+    border-#{$vert}-#{$horz}-radius: $radius;
+    -moz-border-radius-#{$vert}#{$horz}: $radius;
+    -webkit-border-#{$vert}-#{$horz}-radius: $radius;
+}
+
+$icons: 'eye' '<' 18px,
+"start" "\f12e" 16px,
+"stop" "\f12f" 10px;
+@each $name,
+$glyph,
+$size in $icons {
+    .icon-#{$name}:before {
+        display: inline-block;
+        font-family: "Icon Font";
+        content: nth(nth($icons, 1), 2);
+        font-size: $size;
+    }
+}
+
+// @import url(../sass测试/2.css);
+// @if ($w>30%) {
+//     background-color: aquamarine;
+// }
+// @else {
+//     background-color: black;
+// }
+@each $member in a b c d {
+    .#{$member} {
+        background: url("../img/#{$member}.webp") no-repeat;
+        width: 200px;
+        height: 100px;
+        background-size: contain;
+    }
+}
+
+//自定义函数
+//map-get:数组遍历函数
+@function color($key) {
+    @return map-get($colors,
+    $key);
+}
+
+//for不包括尾巴
+@for $var from 3 to 6 {
+    .cs#{$var} {
+        width: 100px;
+        height: #{$var}0px;
+        background-color: rgba(100, $var*10, $var*20, .5); //map-get($colors, $var);
+    }
+}
+
+// 变量区
+html {
+    padding: 10px;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $b1;
+}
+
+* {
+    margin: 4px;
+}
+
+#sass {
+    margin-left: 5px;
+    #{$bl}: 1px solid $b1;
+    width: $w+10px;
+    @if 1+1==2 {
+        //条判断函数
+        background-color: rgba(0, 0, 0, .2);
+    }
+}
+
+#sass {
+    .cs {
+        background-color: $b1;
+        border: {
+            left: 2px solid red;
+        }
+    }
+    &:hover {
+        //引用父亲选择器
+        background-color: blue;
+    }
+}
+
+.cs2 {
+    @extend #sass; //继承
+    display: inline-block;
+    padding: 0 4px;
+    border: 2px solid gray;
+    overflow: hidden;
+    @include left(20px); //引用块
+    @include rounded(top,
+    left,
+    #{$w})
+}
+
+p {
+    //颜色的引用与计算
+    // color：'#'+f+$c;
+    color: rgb(100, 100, 1+$c);
+}

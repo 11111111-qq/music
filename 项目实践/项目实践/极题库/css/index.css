@@ -1,0 +1,136 @@
+    * {
+        font-size: medium;
+    }
+    
+    body,
+    html {
+        width: 900px;
+        height: 100%;
+    }
+    
+    body {
+        background-image: url(/img/img_back.png);
+        background-repeat: repeat-x;
+    }
+    
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        padding: 1%;
+    }
+    
+    .xcy {
+        position: absolute;
+        left: 10%;
+        top: 30%;
+    }
+    
+    .xcy p {
+        color: white;
+        font-family: '隶书', Times, serif;
+        font-size: 50px;
+    }
+    
+    .sub {
+        position: absolute;
+        left: 60%;
+        top: 60%;
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        height: 300px;
+        background-color: rgba(128, 128, 128, 0.4);
+        border-radius: 10px;
+        align-items: center;
+        /* justify-content: center; */
+    }
+    
+    .sub p {
+        align-self: flex-start;
+    }
+    
+    form {
+        position: relative;
+        top: 40px;
+        align-self: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    form a {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 6px;
+    }
+    
+    form span {
+        position: relative;
+        color: rgba(255, 255, 255, 0.4);
+        /* padding: 0 5px; */
+        top: -1px;
+        font-size: 40px;
+        top: -10px;
+    }
+    
+    form img {
+        width: 50px;
+    }
+    
+    .sub p {
+        width: 90%;
+        padding: 10px 10px;
+        color: white;
+        font: 20px;
+        display: block;
+    }
+    
+    #log {
+        width: 200px;
+    }
+    
+    #log_txt {
+        position: absolute;
+        left: 230px;
+        color: white;
+        font-family: '隶书', Times, serif;
+        font: bold;
+        font-size: 30px;
+    }
+    
+    .adm {
+        color: white;
+    }
+    
+    .adm span {
+        float: right;
+    }
+    
+    .login {
+        background-color: rgba(255, 255, 0, 0.534);
+        font-size: 5px;
+        height: 30px;
+        width: 100%;
+        border-radius: 3px;
+        border: none;
+    }
+    
+    .login:hover {
+        background-color: yellow;
+        /* color: white; */
+        transition: all 0.2s ease-in-out;
+    }
+    
+    input {
+        margin: 5px;
+    }
+    
+    #x {
+        /* font-size: 20px; */
+        float: right;
+    }

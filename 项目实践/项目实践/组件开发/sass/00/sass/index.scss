@@ -1,0 +1,12 @@
+@import '_import.scss';
+body {
+    margin: 10px;
+    button {
+        background: {
+            color: $maincolor;
+        }
+        border: {
+            left: 2px solid $bt-bcolor;
+        }
+    }
+}

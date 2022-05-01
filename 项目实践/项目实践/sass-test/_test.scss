@@ -1,0 +1,11 @@
+.cs {
+    position: relative;
+    background: nth2($list-colors, 1, 1);
+    height: 50px;
+    width: 50px;
+    @include shadow-01();
+}
+
+button {
+    @include bg-color(nth($list-colors, 6));
+}

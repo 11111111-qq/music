@@ -1,0 +1,15 @@
+$base-colors:#ebeee8 #ebeddf #e0e0d0 #d5ebe1 #b1d5c8 #99bcac #fff799 #ffee6f #ecd452 #86908a #6b7d73 #555f4d #88bfb8 #5da39d #3d8e86;
+$list-colors:#F1FAFA black,
+#E8FFE8 black,
+#E8E8FF black,
+#8080C0 white,
+#E8D098 white,
+rgb(0, 196, 126) white;
+@mixin bg-color($list, $alt:0) {
+    background-color: nth($list, 1);
+    color: nth($list, 2);
+    @if($alt!=0) {
+        background-color: nth($list, 2);
+        color: nth($list, 1);
+    }
+}
