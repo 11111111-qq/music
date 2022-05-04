@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>网易云app</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <!-- 图标引用 -->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_3375455_mh1iugbjkua.css">
+</head>
+
+<body>
+    <div class="header container-fluid  bg-light p-2">
+        <div class="row">
+            <button class="bar-btn btn col-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft"><img src="./imgs/index/logo1.png" alt=""></button>
+            <ul class="bar-top nav nav-pills col-sm-auto  col-5">
+                <li class="nav-item ">
+                    <a href="" class="nav-link active ">音乐广场</a>
+                </li>
+                <li class="nav-item ">
+                    <a href="" class="nav-link text-black-50">歌单推荐</a>
+                </li>
+                <li class="nav-item ">
+                    <a href="" class="nav-link text-black-50">排行榜</a>
+                </li>
+                <li class="nav-item ">
+                    <a href="" class="nav-link text-black-50">我的音乐</a>
+                </li>
+                <li class="nav-item ">
+                    <a href="" class="nav-link text-black-50">Api测试</a>
+                </li>
+            </ul>
+            <div class="serch-box col-sm col-auto">
+                <div class="row">
+                    <div class="form-floating  col-10 px-0 py-1 cmx-3">
+                        <input type="text" class="form-control" id="serch" placeholder="serch song" name="serch" value="">
+                        <label for="serch" class="text-black-50 ">音乐/歌手/专辑</label>
+                    </div>
+                    <a href="" class="nav-link col-1 text-black-50 " data-bs-toggle="offcanvas" data-bs-target="#login-bar">
+                        <img src="./imgs/index/logo3.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="not-offcanvasLeft">
+        <button type="button" class="btn-close text-reset end" data-bs-dismiss="offcanvas"></button>
+        <div class="offcanvas-body">
+            <div class="offcanvas-header">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item  pe-2 col-sm">
+                        <a href="#" class="nav-link "><img src="./imgs/index/logo1.png" alt=""></a>
+                    </li>
+                    <li class="nav-item col-sm">
+                        <a href="" class="nav-link active ">音乐广场</a>
+                    </li>
+                    <li class="nav-item col-sm">
+                        <a href="" class="nav-link text-black-50">歌单推荐</a>
+                    </li>
+                    <li class="nav-item col-sm">
+                        <a href="" class="nav-link text-black-50">排行榜</a>
+                    </li>
+                    <li class="nav-item col-sm">
+                        <a href="" class="nav-link text-black-50">我的音乐</a>
+                    </li>
+                    <li class="nav-item col-sm">
+                        <a href="" class="nav-link text-black-50">Api测试</a>
+                    </li>
+                    <li class="nav-item">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- main -->
+    <div class="container main mt-3">
+        <ul class="s0 d-flex justify-content-evenly list-unstyled flex-wrap">
+            <li>
+                <div class="port ">
+                    <img src="./imgs/index/logo3.png" alt="">
+                    <div class="infor ">
+                        <div class="s1"><i>18万</i></div>
+                        <div class="s2"><i>播放</i></div>
+                    </div>
+                </div>
+                <a>原速是版权 慢速是欣赏</a>
+            </li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+            <li>啊大大</li>
+        </ul>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>歌曲列表</th>
+                    <th>标题</th>
+                    <th>时长</th>
+                    <th>歌手</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 <span class="badge bg-secondary">↑5</span></td>
+                    <td>
+                        <img src="./imgs/index/logo1.png" alt=""><i class="iconfont icon-circle-next mx-1"></i><span class="song">命运</span><span class="res">-抖音完整版</span>
+                    </td>
+                    <td>03:32</td>
+                    <td>粉太郎</td>
+                </tr>
+                <tr>
+                    <td>1 <span class="badge bg-secondary">↑5</span></td>
+                    <td>
+                        <img src="./imgs/index/logo1.png" alt=""><i class="iconfont icon-circle-next mx-1"></i><span class="song">命运</span><span class="res">-抖音完整版</span>
+                    </td>
+                    <td>03:32</td>
+                    <td>粉太郎</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+    <!-- 登录 -->
+    <div id="login-bar" class="offcanvas offcanvas-top" tabindex="0">
+        <div class="offcanvas-body mt-1 ">
+            <form id="login" name="login">
+                <div class="row align-content-center">
+                    <div class="col-sm-6 ">
+                        <div class="input-group mx-md-5 ">
+                            <span class="input-group-text">账户</span>
+                            <div class="form-floating clearfix">
+                                <input type="text " name="phone" id="name" class="form-control" placeholder="手机/邮箱/QQ">
+                                <label for="name " class="text-black-50 ">手机/邮箱/QQ</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group mt-md-0 mt-sm-0 mt-2">
+                            <span class="input-group-text ">密码</span>
+                            <div class="form-floating clearfix">
+                                <input type="password" id="password" name='password' class="form-control password " placeholder=" 请输入密码">
+                                <label for="password " class="text-black-50 ">请输入密码</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <input type="button" class="submit btn-lg btn-secondary rounded-0" value="登录" id='submit'>
+    </div>
+    <!-- 播放器 -->
+    <div class="container-fluid player  ">
+        <span class="lrics d-block " data-bs-target="#player-fill" data-bs-toggle="offcanvas" aria-controls="offcanvasScrolling">我依然爱着你</span>
+        <div class="row pt-2 pb-3">
+            <div class="port col-sm-3 col-1 mt-1">
+                <img src="./imgs/index/logo2.png" alt="封面" class="port" data-bs-target="#player-fill" data-bs-toggle="offcanvas" aria-controls="offcanvasScrolling">
+            </div>
+            <div class="control col-sm-6 col d-flex flex-column justify-content-center align-items-center">
+                <section class="detail">
+                    <p>夜的第七章
+                        <span class="singer small text-light">周杰伦</span>
+                        <span class="album small text-light">依然范特西</span>
+                    </p>
+                </section>
+                <div class="trl">
+                    <i class="pre iconfont icon-1_music83 mx-2"></i>
+                    <i class="play iconfont icon-1_music81 mx-2"></i>
+                    <i class="next iconfont icon-1_music82 mx-2"></i>
+                </div>
+
+            </div>
+            <div class="others col-sm-3 col-1 d-flex flex-column justify-content-center align-items-center">
+                <div class="opreate d-flex justify-content-center align-items-center ">
+                    <i class="list iconfont icon-queuemusic mx-2 ">
+                        <div class="meun">
+                            <ul class="list-group">
+                                <li class="list-group-item bg-primary text-light ">
+                                    <span class="title">正在播放</li>
+                                <li class="list-group-item">
+                                    <span class="song">夜的第七章</span><span class="tim">4:20</span>
+                                </li>
+                                <li class="list-group-item active">
+                                    <span class="song">夜的第七章</span><span class="tim">4:20</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="song">夜的第七章</span><span class="tim">4:20</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </i>
+                    <i class="voice-full iconfont icon-music1 mx-2 active"></i>
+                    <input type="range" name="" id="" class="form-range">
+                    <i class="voice-none iconfont icon-music_off mx-2 "></i>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div id="player-fill" class="offcanvas offcanvas-top" data-bs-scroll="true" data-bs-backdrop="false">
+        <!-- <div class="offcanvas-header">夜的</div> -->
+        <div class="row">
+            <div class="col-8 card img-fluid">
+                <img class="card-img-top port" src="./imgs/index/logo2.png"></img>
+                <div class="lrics2 card-img-overlay d-flex justify-content-end align-content-center flex-column text-center text-black-50">
+                    <p>调用此接口 , 可删除视频歌单里的视频 ( 需要登录 ) 必选参数 :</p>
+                    <p>调用此接口 , 可删除视频歌单里的视频 ( 需要登录 ) 必选参数 :</p>
+                    <p class="active">视频 id,支持多个,用,隔开</p>
+                    <p>调用此接口 , 可删除视频歌单里的视频 ( 需要登录 ) 必选参数</p>
+                    <p>调用此接口 , 可删除视频歌单里的视频 ( 需要登录 ) 必选参数</p>
+                </div>
+            </div>
+            <div class="col-4 container-fluid">
+                <ul class="nav nav-justified">
+                    <li class="nav-item">
+                        <a href="" class="nav-link active">相似歌曲</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link ">相关MV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link ">其他音源</a>
+                    </li>
+                </ul>
+                <ul class="list-group similar active">
+                    <li class="list-group-item">第一项</li>
+                    <li class="list-group-item">第二项</li>
+                    <li class="list-group-item">第三项</li>
+                </ul>
+                <ul class="list-group mv ">
+                    <li class="list-group-item">第一项</li>
+                    <li class="list-group-item">第二项</li>
+                    <li class="list-group-item">第三项</li>
+                </ul>
+                <ul class="list-group others">
+                    <li class="list-group-item">第一项</li>
+                    <li class="list-group-item">第二项</li>
+                    <li class="list-group-item">第三项</li>
+                </ul>
+                <hr>
+                <section class="comment bg-light">
+                    <header>评论</header>
+                </section>
+                <ul class="list-group comment active ">
+                    <li class="list-group-item">第一项</li>
+                    <li class="list-group-item">第二项</li>
+                    <li class="list-group-item">第三项</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <audio src="" controls id="music" preload hidden></audio>
+    <!-- JavaScript引用 -->
+    <script src=" ./js/plugs/jquery-3.6.0.js "></script>
+    <script src="./js/boot5_ex.js "></script>
+    <script src="./js/global.js "></script>
+    <script src="./js/global_ex.js "></script>
+    <script src="./js/index.js "></script>
+</body>
+
+</html>

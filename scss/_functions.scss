@@ -1,0 +1,11 @@
+@function nth2($lists, $a:1, $b:0, $c:0) {
+    @if($b==0) {
+        @return nth($lists, $a);
+    }
+    @else if($b!=0) {
+        @return nth(nth($lists, $a), $b);
+    }
+    @else if($b!=0 && $c!=0) {
+        @return nth(nth(nth($lists, $a), $b), $c);
+    }
+}
