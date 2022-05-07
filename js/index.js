@@ -1,161 +1,149 @@
+///////////////////////////////////////////////////////////////
+//-------------------------index功能页----------------------------
+///////////////////////////////////////////////////////////////
 $(document).ready(function() {
-    // 
-    //数据部分
-    //
-    var qq = JSON.parse(localStorage.getItem("17628097136"))
-    var domain = 'https://mu-two.vercel.app'
-    var testMusic = "http://m702.music.126.net/20220505002924/c133d7e76d240d9a72a863e4457755d6/jd-musicrep-ts/4600/a5fa/c85f/555d31856cd048d0635a8903e3fdce2c.mp3";
 
-
+    //初始化
+    playerReset();
+    // document.body.style.overflow = 'hidden';
+    $('#more').slideUp();
+    $('.comment').slideUp();
+    $('#musicPool').slideUp();
+    //搜索功能
     $('#serch').bind('keyup', e => {
-        var key0 = $('#serch').val();
-        if (e.key == 'Enter' && key0 != '') {
-            $('.main table').removeClass('hide');
-            $('tbody').empty();
-            $('tbody').append(load2)
-            sessionStorage.removeItem('songs2');
-            sessionStorage.removeItem('lyric');
-            $('.song-index').html(key0)
-            serch(key0)
-        }
-    })
+            var key0 = $('#serch').val();
+            if (e.key == 'Enter' && key0 != '') {
+                // $('.main table').removeClass('hide');
+                $('tbody').empty();
+                $('tbody').append(load2)
+                sessionStorage.removeItem('songs2');
+                sessionStorage.removeItem('lyric');
+                $('.song-index').html(key0)
+                serch(key0)
+                $('#musicPool').slideDown();
+                $('#musicPool h5').html(key0);
 
-    // 
-    //点击播放功能
-    //
-    $('.main').on('click', 'td', function() {
+            }
+        })
+        // 
+        //点击播放功能
+        //
+    $('#musicPool').on('click', 'td', function() {
         var _id = $(this).attr('data-id');
         songPlayer(_id);
         lyrics(_id)
+    });
+    $('.poolclose').click(() => {
+        $('#musicPool').slideUp();
     })
 
-    function songPlayer(id, type = false) {
-        $('ul.similar').empty();
-        $('ul.mv').empty();
-        var ad = '#a' + id;
-        $('.detail').attr('data-id', id);
-        if ($(ad).length == 0 || type) {
-            var detailURL = domain + '/song/url?id=' + id;
-            var song = JSON.parse(sessionStorage.getItem('songs2'))[id] ? JSON.parse(sessionStorage.getItem('songs2'))[id] : JSON.parse(sessionStorage.getItem('songs3'))[id];
-            sessionStorage.removeItem('songs3');
-            //歌手mv
-            getMV(song.singerID)
-                //歌手mv
-            function p1(x) {
-                let p = new Promise((v, f) => {
-                    $.post(x, e => {
-                        // console.log(e)
-                        v(e);
-                    });
-                })
-                return p;
-            }
-            p1(detailURL).then(e => {
-                var url = e.data[0].url;
-                if (!url) {
-                    url = 'https://music.163.com/song/media/outer/url?id=' + id + '.mp3'
-                }
-                $('#music').attr('src', url);
 
+    function songPlayer(id, type = false) {
+        try {
+            playerReset();
+            songComment(id);
+            var ad = '#a' + id;
+            $('.detail').attr('data-id', id);
+            if ($(ad).length == 0 || type) {
+                var detailURL = domain + '/song/url?id=' + id;
+                var song;
+                if (JSON.parse(sessionStorage.getItem('songs2')) != null && JSON.parse(sessionStorage.getItem('songs2'))[id]) {
+                    song = JSON.parse(sessionStorage.getItem('songs2'))[id];
+                } else if (JSON.parse(sessionStorage.getItem('songs3')) != null && JSON.parse(sessionStorage.getItem('songs3'))[id]) {
+                    song = JSON.parse(sessionStorage.getItem('songs3'))[id]
+                } else {
+                    song = JSON.parse(sessionStorage.getItem('listsongs'))[id]
+                }
+                sessionStorage.removeItem('songs3');
                 $('img.port').attr('src', song.pic)
                 $('section.detail').children('span').eq(0).html(song.name)
-                $('section.detail').children('span').eq(1).html(song.singer)
-                $('section.detail').children('span').eq(2).html(song.al)
+                $('section.detail').children('span').eq(1).html(' - ' + song.singer)
+                $('section.detail').children('span').eq(2).html(' - 《' + song.al + '》')
                 $('.allTime').html(song.time)
-                if ($(ad).length == 0) { addMeun(id); }
-
-                if (type) {
-                    $('i.play').click();
-                    $('i.play').click();
-
-                } else {
-                    $('i.play').click();
+                    //歌手mv
+                getMV(song.singerID)
+                    //歌手mv
+                function p1(x) {
+                    let p = new Promise((v, f) => {
+                        $.post(x, e => {
+                            // console.log(e)
+                            v(e);
+                        });
+                    })
+                    return p;
                 }
+                p1(detailURL).then(e => {
+                    var url = e.data[0].url;
+                    if (!url) {
+                        url = 'https://music.163.com/song/media/outer/url?id=' + id + '.mp3'
+                    }
+                    $('#music').attr('src', url);
 
 
-                //设置当前正在播放
-                $('.meun ul li').removeClass('on');
-                $('.meun ul li[data-id=' + id + ']').toggleClass('on text-light')
+                    if ($(ad).length == 0) {
+                        addMeun(id);
+                    }
+
+                    if (type) {
+                        $('i.play').click();
+                        $('i.play').click();
+
+                    } else {
+                        $('i.play').click();
+                    }
+
+
+                    //设置当前正在播放
+                    $('.meun ul li').removeClass('on');
+                    $('.meun ul li[data-id=' + id + ']').toggleClass('on text-light')
+                })
+            } else {
+                $('i.play').click();
+
+            }
+            //相似歌曲
+            simsongs(id).then(e => {
+                for (let x in e) {
+
+                    var infor = $('<span class="mx-3"></span>').html(e[x].name + '-' + e[x].singer + '/' + e[x].al);
+                    var img = $('<img >').attr('src', e[x].pic);
+                    var li = $('<li></li>').append(img, infor);
+                    li.attr('data-id', x)
+                    $('ul.similar').append(li);
+                }
             })
-        } else {
-            $('i.play').click();
+        } catch (error) {
 
         }
-        //相似歌曲
-        simsongs(id).then(e => {
-            for (let x in e) {
 
-                var infor = $('<span class="mx-3"></span>').html(e[x].name + '-' + e[x].singer + '/' + e[x].al);
-                var img = $('<img >').attr('src', e[x].pic);
-                var li = $('<li></li>').append(img, infor);
-                li.attr('data-id', x)
-                $('ul.similar').append(li);
-            }
-        })
 
     }
     //歌单部分
-    function addMeun(id) {
-        var total = $('.meun ul li').length;
-        var song = JSON.parse(sessionStorage.getItem('songs2'))[id];
-        var tr = '<li class="list-group-item bg-ligth text-black-50" id=a' + id + ' data-id=' + id + ' index=' + total + '>' + song.name + ' -' + song.singer + ' /' +
-            song.time + ' <span class = "badge bg-secondary del float-end " > x </span></li> '
-        $('.meun ul').append(tr);
-        $('.count.badge').html($('.meun ul li').length - 1)
-    };
+
     $('.meun').on('click', 'li', function() {
         var _id = $(this).attr('data-id');
         // console.log(_id)
         songPlayer(_id, true);
         lyrics(_id)
-    })
+    });
     $('.clear-all').on('click', function() {
         $('.meun ul').empty().append('<li class="clear-all list-group-item">清空</li>');
         $('i.pre').click();
 
-    })
+    });
     $('.meun').on('click', 'span', function() {
         $(this).parent().remove();
         $('.count.badge').html($('.meun ul li').length - 1)
 
         return false;
-    })
+    });
     $('.main').on('click', 'i', function() {
-        var _id = $(this).parent().attr('data-id').replace('a', '');
+        var _id = $(this).parent().attr('data-id').replace('a', '') ? $(this).parent().attr('data-id').replace('a', '') : $(this).parent().attr('data-id');
         // console.log(_id)
         addMeun(_id);
         return false;
     })
 
-
-
-
-    //解析歌词成数组
-    function lyrics(id) {
-        var lrURL = domain + '/lyric?id=' + id;
-
-        function p2(x) {
-            let p = new Promise((v, f) => {
-                $.post(x, e => {
-                    v(e);
-                });
-            })
-            return p;
-        }
-        p2(lrURL).then(e => {
-            var lyric = JSON.stringify(e.lrc.lyric)
-            var lyrics = {};
-            var lyrics_time = [];
-            var lyrics_words = [];
-            var times = lyric.match(/([0-9\.:]{7,9}|(?<=]).*?(?=\\))/g);
-            for (let x in times) {
-                if (x % 2 == 0) {
-                    lyrics[Math.floor(x / 2)] = [timeFormat(times[x]), times[eval(x) + 1]]
-                }
-            }
-            sessionStorage.setItem('lyric', JSON.stringify(lyrics))
-        })
-    }
     //播放器功能
     var prePlayer = '';
     var nextPlay = '';
@@ -234,6 +222,7 @@ $(document).ready(function() {
                     $('p.l2').html(lr[c - 1][1]);
                 }
                 $('p.l3').html(lr[c][1]);
+                $('.xx').text(lr[c][1]);
                 $('p.l4').html(lr[eval(c) + 1][1]);
                 $('p.l5').html(lr[eval(c) + 2][1]);
             } catch (error) {}
@@ -264,14 +253,14 @@ $(document).ready(function() {
             $('video').attr('src', k)
             var e = JSON.parse(sessionStorage.getItem('mvlist'));
             for (let x in e) {
-                var infor = $('<span class="mx-3"></span>').html(e[x].name + '-' + e[x].singer + '/' + e[x].publish);
-                var img = $('<img >').attr('src', e[x].pic);
+                var infor = $('<span class="mx-3"></span>').html(e[x].name + '-' + e[x].singer);
+                var img = $('<img >').attr('src', e[x].pic).attr('title', e[x].publish);
                 var li = $('<li ></li>').append(img, infor);
                 li.attr('data-id', x)
                 $('ul.mv-player').append(li);
             }
         })
-    })
+    });
     $('ul.mv-player').on('click', 'li', function() {
             var _id = $(this).attr('data-id');
             openMV(_id).then(k => {
@@ -282,57 +271,68 @@ $(document).ready(function() {
         //登录处理
         //
     $('.submit').click(function() {
-        //请求参数
-        var list = {
-            'phone': $('#name').val(),
-            'password': $('#password').val()
-        };
-        $.ajax({
-            //请求方式
-            type: "GET",
-            url: "https://mu-two.vercel.app/login/cellphone",
-            //数据，json字符串
-            data: list,
-            //请求成功
-            success: function(result) {
-                if (result.loginType == 1) {
-                    alert('登录成功！');
-                    var ck = JSON.stringify(result)
-                    localStorage.setItem($("#name").val(), ck)
-                    setCookie(result.account.id, result.account.name, 1)
-                } else {
-                    alert('请检查账号/密码是否正确！')
-                    setCookie(qq.account.id, qq.token, 1)
+            //请求参数
+            var list = {
+                'phone': $('#name').val(),
+                'password': $('#password').val()
+            };
+            $.ajax({
+                //请求方式
+                type: "GET",
+                url: "https://mu-two.vercel.app/login/cellphone",
+                //数据，json字符串
+                data: list,
+                //请求成功
+                success: function(result) {
+                    if (result.loginType == 1) {
+                        alert('登录成功！');
+                        var ck = JSON.stringify(result)
+                        localStorage.setItem($("#name").val(), ck)
+                        setCookie(result.account.id, result.account.name, 1)
+                    } else {
+                        alert('请检查账号/密码是否正确！')
+                        setCookie(qq.account.id, qq.token, 1)
 
+                    }
+                },
+                //请求失败，包含具体的错误信息
+                error: function(e) {
+                    console.log(e.status);
+                    alert('请检查账号/密码是否正确！')
                 }
-            },
-            //请求失败，包含具体的错误信息
-            error: function(e) {
-                console.log(e.status);
-                alert('请检查账号/密码是否正确！')
-            }
-        });
+            });
+        })
+        //百科
+    $('.baike').click(() => {
+        $('#more').slideToggle(500);
+    })
+    $('span.com').click(() => {
+        $('.comment').slideToggle(500)
+        $('.com,.com2').toggleClass('active');
     })
 
-    function swi() {
-        if (document.body.clientWidth <= 992) {
-            $('.switch').css('display', 'flex');
-            $('.bar-top').css('display', 'none');
-            $('#not-offcanvasLeft').attr('id', 'offcanvasLeft')
-        } else {
-            $('.switch').css('display', 'none');
-            $('.bar-top').css('display', 'flex');
-            $('#offcanvasLeft').attr('id', 'not-offcanvasLeft')
-        }
-    }
+    ///////////////////////all-lists///////////////////////////////
+
+    $('.main').on('click', 'li', function() {
+            $('tbody').empty();
+            $('tbody').append(load2)
+            var _id = $(this).attr('data-id');
+            console.log(_id)
+            getReclists(_id)
+            $('#musicPool').slideToggle(500);
+        })
+        ///////////////////////测试///////////////////////////////
+
+    // baidu_sug1('qq')
+    // getReclists(2919512648)
+    $('#serch').blur(() => {
+            $('#list').css('dispaly', 'none');
+        })
+        /////////////////////////////////////////////////////////
+        //////导航栏自适应,放在底部////////////////////////////////
+        /////////////////////////////////////////////////////////
     swi();
     $(window).resize(function() {
         swi();
     })();
-
-
-    //测试
-
-
-
-})
+});

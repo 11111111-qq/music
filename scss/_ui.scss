@@ -6,3 +6,10 @@
     font-size: $font-size +px;
     font-size: $font-size / $base-font-size +rem;
 }
+
+//取消滚动条
+@mixin noScroll {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

@@ -1,3 +1,19 @@
+///////////////////////////////////////////////////////////////
+//-------------------------函数定义----------------------------
+///////////////////////////////////////////////////////////////
+//自适应
+function swi() {
+    if (document.body.clientWidth <= 992) {
+        $('.switch').css('display', 'flex');
+        $('.bar-top').css('display', 'none');
+        $('#not-offcanvasLeft').attr('id', 'offcanvasLeft')
+    } else {
+        $('.switch').css('display', 'none');
+        $('.bar-top').css('display', 'flex');
+        $('#offcanvasLeft').attr('id', 'not-offcanvasLeft')
+    }
+}
+
 //设置cookie
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
@@ -15,6 +31,7 @@ function getCookie(cname) {
     }
     return "";
 }
+
 //检查cookie
 function checkCookie(key, fn1, fn2) {
     var data = getCookie(key);
@@ -46,7 +63,22 @@ function songList(song, index) {
     }
     return tr;
 }
-
+//meun
+function addMeun(id) {
+    var total = $('.meun ul li').length;
+    var song;
+    if (JSON.parse(sessionStorage.getItem('songs2')) != null && JSON.parse(sessionStorage.getItem('songs2'))[id]) {
+        song = JSON.parse(sessionStorage.getItem('songs2'))[id];
+    } else if (JSON.parse(sessionStorage.getItem('songs3')) != null && JSON.parse(sessionStorage.getItem('songs3'))[id]) {
+        song = JSON.parse(sessionStorage.getItem('songs3'))[id]
+    } else {
+        song = JSON.parse(sessionStorage.getItem('listsongs'))[id]
+    }
+    var tr = '<li class="list-group-item bg-ligth text-black-50" id=a' + id + ' data-id=' + id + ' index=' + total + '>' + song.name + ' -' + song.singer + ' /' +
+        song.time + ' <span class = "badge bg-secondary del float-end " > x </span></li> '
+    $('.meun ul').append(tr);
+    $('.count.badge').html($('.meun ul li').length - 1)
+};
 //歌曲搜索
 
 async function check(id) {
@@ -67,12 +99,12 @@ function serchSongs(keywords) {
     return p;
 }
 
-function getSong(data) {
+function getSong(data, name = 'songs2') {
     let p = new Promise((v, f) => {
         // console.log(data)
         var songs = [];
         var songs2 = {};
-        for (let x of data.result.songs) {
+        for (let x of data) {
             var song = {};
             time = x.dt;
             song.time = timeFormat(time, 0, 1)
@@ -92,70 +124,24 @@ function getSong(data) {
             songs.push(song)
             songs2[song.id] = song;
         }
-        v(songs)
-        sessionStorage.setItem('songs2', JSON.stringify(songs2))
+        v(songs2)
+        sessionStorage.setItem(name, JSON.stringify(songs2))
     });
     return p;
 }
 
 function serch(keywords) {
     serchSongs(keywords).then(data => {
-        return getSong(data);
+        return getSong(data.result.songs);
 
     }).then(data => {
-        $('.load2').addClass('waiting')
+        // $('.load2').addClass('waiting')
         for (let x in data) {
             var song = songList(data[x], 1 + eval(x));
-
-            $('.main tbody').append(song)
+            $('#musicPool tbody').append(song)
         }
     });
 };
-//时间格式化
-function timeFormat(time, n = 0) {
-    var m, s;
-    var count = Math.pow(10, n);
-    if (typeof time == "number") {
-        m = Math.floor(time / 1000 / 60);
-        s = Math.round((time / 1000 % 60) * count) / count;
-    } else {
-        m = time.split(':')[0];
-        s = time.split(':')[1];
-        s = Math.round(s * count) / count;
-    }
-    m = String(m);
-    s = String(s);
-    if (m.length == 1) {
-        m = '0' + m;
-    }
-    if (Number(m) > 59) {
-        m = Math.floor(m / 60) + ':' + (m % 60)
-    }
-    if (s.length == 1) {
-        s = '0' + s;
-    }
-    s = String(s);
-    if (s.includes('.')) {
-        s1 = s.split('.')[0];
-        s2 = s.split('.')[1];
-        if (s2.length < n) {
-            var j = n - s2.length;
-            for (let i = 1; i <= j; i++) {
-                s2 += '0'
-            }
-        }
-        s = s1 + '.' + s2;
-    } else {
-        if (n != 0) {
-            s = s + '.';
-            for (let i = 1; i <= n; i++) {
-                s += '0'
-            }
-        }
-
-    }
-    return m + ':' + s;
-}
 //tbody
 var load2 = "";
 load2 += "<div class=\"load2\">";
@@ -166,46 +152,56 @@ load2 += "<span class=\"loading\"><\/span>";
 load2 += "<span class=\"loading\"><\/span>";
 load2 += "<span class=\"loading\"><\/span>";
 load2 += "<\/div>";
-//相似歌曲
-function getSimSongs(id) {
-    let p = new Promise((v, f) => {
-        $.post('https://mu-two.vercel.app/simi/song?id=' + id + '&limit=100', e => {
-            v(e);
-        });
-    })
-    return p;
+//定义song
+function songFn(data, name) {
+    var songs = [];
+    var songs3 = {};
+    for (let x of data) {
+        var song = {};
+        time = x.bMusic.playTime;
+        song.time = timeFormat(time, 0, 1)
+        song.size = x.bMusic.size + "kb";
+        song.id = x.id;
+        song.singerID = x.artists[0].id;
+        song.fee = x.fee;
+        song.al = x.album.name;
+        song.name = x.name;
+        song.pic = x.album.blurPicUrl;
+        song.url = x.mp3Url;
+        song.singer = x.artists[0].name;
+        songs.push(song)
+        songs3[song.id] = song;
+    }
+    sessionStorage.setItem(name, JSON.stringify(songs3))
+    return songs3;
 }
 
-function simsongs(id) {
-    let q = getSimSongs(id).then(data => {
-        let p = new Promise((v, f) => {
-            var songs = [];
-            var songs3 = {};
-            for (let x of data.songs) {
-                var song = {};
-                time = x.bMusic.playTime;
-                song.time = timeFormat(time, 0, 1)
-                song.size = x.bMusic.size + "kb";
-                song.id = x.id;
-                song.singerID = x.artists[0].id;
-                song.fee = x.fee;
-                song.al = x.album.name;
-                song.name = x.name;
-                song.pic = x.album.blurPicUrl;
-                song.url = x.mp3Url;
+//解析歌词成数组
+function lyrics(id) {
+    var lrURL = domain + '/lyric?id=' + id;
 
-                song.singer = x.artists[0].name;
-                songs.push(song)
-                songs3[song.id] = song;
-            }
-            sessionStorage.setItem('songs3', JSON.stringify(songs3))
-            v(songs3);
+    function p2(x) {
+        let p = new Promise((v, f) => {
+            $.post(x, e => {
+                v(e);
+            });
         })
         return p;
+    }
+    p2(lrURL).then(e => {
+        var lyric = JSON.stringify(e.lrc.lyric)
+        var lyrics = {};
+        var lyrics_time = [];
+        var lyrics_words = [];
+        var times = lyric.match(/([0-9\.:]{7,9}|(?<=]).*?(?=\\))/g);
+        for (let x in times) {
+            if (x % 2 == 0) {
+                lyrics[Math.floor(x / 2)] = [timeFormat(times[x]), times[eval(x) + 1]]
+            }
+        }
+        sessionStorage.setItem('lyric', JSON.stringify(lyrics))
     })
-    return q;
-};
-
+}
 //获取歌手mv
 function getMV(singerID) {
     let p = new Promise((v, f) => {
@@ -213,7 +209,7 @@ function getMV(singerID) {
             v(e);
         });
     }).then(e => {
-        console.log(e)
+        // console.log(e)
         var mvlist = {};
         let p = new Promise((v, f) => {
             var k = e.mvs;
@@ -252,4 +248,130 @@ function openMV(mvid) {
     })
     return p;
 }
-openMV(5436712)
+//播放初始化
+
+function playerReset() {
+    $('ul.similar li:gt(0)').remove();
+    $('ul.mv li:gt(0)').remove();
+    $('ul.mv-player li:gt(0)').remove();
+    $('.words').html(words_rest);
+    $('.detail').html(detail_rest);
+    $('.xx').html(nowlric_rest);
+    $('.comment ol').empty();
+}
+//评论条
+function songComment(id) {
+    let p = new Promise((v, f) => {
+        $.post('https://mu-two.vercel.app/comment/music?id=' + id + '&limit=2', e => {
+            v(e);
+            // console.log(e.hotComments)
+            var comments = [];
+
+            for (let x of e.hotComments) {
+                var com = {};
+                com.name = x.user.nickname;
+                com.pic = x.user.avatarUrl;
+                com.time = x.timeStr;
+                com.like = x.likedCount;
+                com.content = x.content;
+                comments.push(com)
+            }
+            v(comments)
+                // console.log(comments)
+            for (let x of comments) {
+                // console.log(commentStr(x).get(0))
+                $('.comment ol').append(commentStr(x));
+            }
+        });
+    })
+}
+
+function commentStr(comment) {
+    var li = $('<li></li>');
+    var img = $('<img>').attr('src', comment.pic);
+    var p1 = $('<p></p>').addClass('sp')
+    span11 = $('<span class="speaker"></span>').html(comment.name + ':');
+    span12 = $('<span></span>').html(comment.content)
+    p1.append(span11, span12);
+    var p2 = $('<p></p>').addClass('tim');
+    span21 = $('<span class="float-start"></span>').html(comment.time);
+    span22 = $('<span class="float-end px-1"> | <span class="back"> 回复 </span> </span >').prepend($('<i class="iconfont icon-good text-primary"></i>').html(comment.like));
+    p2.append(span21, span22);
+    li.append(img, p1, p2);
+    return li;
+}
+// songComment(186016)
+
+//推荐歌单
+function listsRecommand() {
+    let p = new Promise((v, f) => {
+        $.post('https://mu-two.vercel.app/personalized?limit=50', e => {
+            var lists = [];
+            for (let x of e.result) {
+                var com = {};
+                com.name = x.name;
+                com.id = x.id;
+                com.pic = x.picUrl;
+                com.playCount = Math.floor(x.playCount / 10000) + '万';
+                lists.push(com)
+            }
+            v(lists);
+            $('.s0 li').remove();
+            for (let x of lists) {
+                $('.s0').append(reommandStr(x));
+            }
+        });
+    })
+}
+
+function reommandStr(list) {
+    var li = $('<li></li>');
+    li.attr('data-id', list.id)
+    var p = $('<p></p> ').html(list.name);
+    var div = $('<div class="port "></div>');
+    img = $('<img>').attr('src', list.pic)
+    infor = $('<div class="infor "><div class="s2"><i class="iconfont icon-circle-next"></i></div></div>').prepend($(' <div class="s1"></div>').append($('<i class="iconfont icon-music"></i>').html(list.playCount)))
+    div.append(img, infor);
+    li.append(div, p)
+    return li;
+}
+//获取歌单详情
+function getReclists(listid) {
+    let p = new Promise((v, f) => {
+        $.post('https://mu-two.vercel.app/playlist/detail?id=' + listid, e => {
+            var lists = [];
+            listcont = {
+                'listname': e.playlist.name,
+                'listpic': e.playlist.coverImgUrl,
+                'listback': e.playlist.subscribedCount,
+                'listupdate': new Date(e.playlist.updateTime).format("YYYY-MM-DD"),
+                'listmore': e.playlist.description
+            };
+            lists.push(listcont);
+            sessionStorage.setItem('listsongs_cont', JSON.stringify(listcont));
+            var songss = '';
+            var ids = [];
+            for (let x of e.playlist.trackIds) {
+                ids.push(x.id)
+                songss += ',' + x.id;
+            };
+            v(songss.substr(1))
+        });
+    }).then(e => {
+        var q = new Promise((v, f) => {
+            $.get('https://mu-two.vercel.app/song/detail?ids=' + e, data => {
+                getSong(data.songs, 'listsongs').then(a => {
+                    var listcont = JSON.parse(sessionStorage.getItem('listsongs_cont'));
+                    $('tbody').empty();
+                    $('tbody').append(load2)
+                    for (let x in a) {
+                        var song = songList(a[x], 1 + eval(x));
+                        $('#musicPool tbody').append(song)
+                    }
+                    $('#musicPool').slideDown();
+                    $('#musicPool h5').html(listcont.listname).attr('title', listcont.listmore) //(listcont.listmore));
+                })
+            })
+        })
+    })
+};
