@@ -8,6 +8,12 @@
 /*------------------------------------*\
     $页头
 \*------------------------------------*/
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 .header {
   line-height: 1.5em;
   position: relative;
@@ -30,11 +36,17 @@
   top: -8px !important;
 }
 
-.header .icon-music {
-  font-size: 30px;
-  margin-top: -10px;
-  padding-right: 10px;
-  font-family: GeikaiSuikou;
+.header img {
+  width: 50px;
+}
+
+.header .bar-btn {
+  font-size: 12px;
+  height: 30px;
+  line-height: 48px;
+  outline: none;
+  border: none;
+  background-color: #f8f9fa;
 }
 
 #list {
@@ -46,6 +58,7 @@
           box-shadow: 0 3px 3px 1px rgba(45, 45, 45, 0.3);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  z-index: 7;
 }
 
 #list li {
@@ -62,6 +75,10 @@
   color: black;
 }
 
+#list li a:hover {
+  color: red;
+}
+
 #list li:hover {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.1);
@@ -70,6 +87,22 @@
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
+}
+
+#list .b-link {
+  float: right;
+}
+
+span.badge {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+#bug ul {
+  list-style: none;
+  position: relative;
+  padding: 0;
 }
 
 img {
@@ -90,6 +123,70 @@ img {
 
 #login-bar {
   height: 200px;
+}
+
+#login-bar .login {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+#login-bar .login .infor {
+  position: relative;
+  background-color: #fff;
+  width: 200px;
+  height: 70px;
+  top: 40px;
+  left: 20px;
+  -webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+#login-bar .login .infor .t1 {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  padding: 0;
+  border-radius: 50%;
+  left: 70px;
+  top: -30px;
+}
+
+#login-bar .login .infor .t1 img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+}
+
+#login-bar .login .infor .t2 {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#login-bar .login .infor .t2 .nameid {
+  font-size: 12px;
 }
 
 .player {
@@ -186,6 +283,11 @@ img {
   -o-border-radius: 50%;
 }
 
+.player .row .port i {
+  position: relative;
+  top: -20px;
+}
+
 .player .row .port img {
   width: 70px;
   height: 70px;
@@ -241,7 +343,9 @@ img {
 
 .opreate i .count.badge {
   position: absolute;
-  left: -25px;
+  width: 20px;
+  height: 20px;
+  left: -15px;
   font-size: 12px;
   display: inline-block;
   border-radius: 50%;
@@ -249,6 +353,7 @@ img {
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
+  top: -10px;
 }
 
 .opreate i.list:hover .meun {
@@ -365,6 +470,7 @@ img {
   max-height: 820px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  z-index: 10000;
 }
 
 #player-fill .row {
@@ -472,6 +578,11 @@ img {
 
 .main {
   width: 100%;
+  height: 100%;
+}
+
+.main .row {
+  height: 100%;
 }
 
 .main::-webkit-scrollbar {
@@ -480,16 +591,83 @@ img {
 
 .main h4 {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  height: 50px;
+}
+
+.main .s3 {
+  height: calc(100% - 250px) !important;
+  overflow: scroll;
+}
+
+.main .s3::-webkit-scrollbar {
+  display: none;
+}
+
+.main .s3 .td {
+  top: 20px;
+  position: relative;
+  font-size: 12px;
+}
+
+.main .s3 .td .song {
+  margin: 0 3px;
+}
+
+.main .s3 .td .res {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.main .s3 .td .icon-add {
+  top: 0px;
+  position: absolute;
+  display: inline-block;
+  font-size: 15px;
+  transition: all .1s linear;
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  -ms-transition: all .1s linear;
+  -o-transition: all .1s linear;
+}
+
+.main .s3 .td .icon-add:hover {
+  font-size: 20px;
+  color: #1f9215;
+  top: -2px;
 }
 
 .main .s2 {
   -webkit-box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2);
           box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 0;
+}
+
+.main .s2 > button {
+  width: 150px;
+  height: 30px;
+  line-height: 15px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 75px);
+  opacity: .7;
+}
+
+.main .s2 > button:hover {
+  opacity: 1;
+}
+
+.main .s2 .tt {
+  position: relative;
+  top: -3px;
+  left: -10px;
+  height: 500px !important;
+  width: 100%;
 }
 
 .main .s0 {
   overflow: auto;
-  height: 500px;
+  height: calc(100% - 250px) !important;
   -webkit-box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2);
           box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2);
   padding: 10px 0;
@@ -883,32 +1061,51 @@ ul.mv-player li {
 }
 
 #musicPool {
-  bottom: 110px;
+  position: absolute;
+  bottom: 120px;
+  width: 100%;
   height: 400px;
   background-color: #f8f9fa;
-  overflow: scroll;
   -webkit-box-shadow: 0 -3px 6px 2px rgba(45, 45, 45, 0.3);
           box-shadow: 0 -3px 6px 2px rgba(45, 45, 45, 0.3);
   border-bottom: none;
+  z-index: 6;
 }
 
-#musicPool::-webkit-scrollbar {
-  display: none;
-}
-
-#musicPool .poolclose {
+#musicPool > span {
   position: absolute;
-  top: 3px;
+  z-index: 6;
+  top: 6px;
+}
+
+#musicPool > span.poolclose {
   right: 6px;
 }
 
+#musicPool > span.poolup {
+  right: 100px;
+}
+
+#musicPool > span.pooldown {
+  right: 50px;
+}
+
 #musicPool h5 {
+  position: absolute;
+  width: 100%;
   padding: 5px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-#musicPool table {
-  height: 100%;
+#musicPool .tt {
+  position: relative;
+  top: 40px;
+  height: 350px !important;
+  overflow: scroll;
+}
+
+#musicPool .tt::-webkit-scrollbar {
+  display: none;
 }
 
 #musicPool table th {
@@ -945,6 +1142,60 @@ ul.mv-player li {
   font-size: 20px;
   color: #1f9215;
   top: -2px;
+}
+
+.offcanvas-body {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.offcanvas-header {
+  width: 170px;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.offcanvas-header li.port,
+.offcanvas-header li.port a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: transparent;
+}
+
+.offcanvas-header li {
+  background-color: #f8f9fa;
+  margin: 5px 0;
+  width: 100%;
+  padding: 3px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.offcanvas-header li p,
+.offcanvas-header li a {
+  position: relative;
+  width: 120px;
+  padding: 0 3px;
+  word-break: break-all;
+  color: #928d8d;
+}
+
+.offcanvas-header li p span,
+.offcanvas-header li a span {
+  display: inline-block;
+  color: #df4040;
+  line-height: 15px;
+  position: relative;
+  top: 8px;
+  text-align: center;
+  width: 100%;
 }
 
 /*------------------------------------*\
