@@ -1,0 +1,38 @@
+@mixin load1 ($class, $n:4) {
+    .#{$class} {
+        // display: none!important;
+        width: 200px;
+        height: 15px;
+        left: calc(50% - 100px);
+        top: 50%;
+        position: absolute;
+        color: #dbdbda;
+        span {
+            display: inline-block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #d14f4f;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            @for $var from 1 to $n {
+                &:nth-of-type(#{$var}) {
+                    animation-delay: 3s/$n*($var - 1);
+                }
+            }
+            animation: load1 3s cubic-bezier(0.12, 0.75, 1, 0.48) infinite;
+            -webkit-animation: load1 3s cubic-bezier(0.12, 0.75, 1, 0.48) infinite;
+        }
+    }
+    @keyframes load1 {
+        0% {
+            left: 0;
+        }
+        100% {
+            left: 100%;
+        }
+    }
+}
