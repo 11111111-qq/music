@@ -1,0 +1,107 @@
+{
+  "id": "3375455",
+  "name": "wyy",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3153836",
+      "name": "video",
+      "font_class": "video",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "6135245",
+      "name": "good",
+      "font_class": "good",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "745689",
+      "name": "Add",
+      "font_class": "add",
+      "unicode": "e669",
+      "unicode_decimal": 58985
+    },
+    {
+      "icon_id": "490516",
+      "name": "queue_music",
+      "font_class": "queuemusic",
+      "unicode": "ecc1",
+      "unicode_decimal": 60609
+    },
+    {
+      "icon_id": "755525",
+      "name": "circle-next",
+      "font_class": "circle-next",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "1116121",
+      "name": "music",
+      "font_class": "music",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "5072089",
+      "name": "music(3)",
+      "font_class": "music1",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "7213081",
+      "name": "Next",
+      "font_class": "Next",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "7213090",
+      "name": "Previous",
+      "font_class": "Previous",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
+      "icon_id": "11981870",
+      "name": "music_off",
+      "font_class": "music_off",
+      "unicode": "e982",
+      "unicode_decimal": 59778
+    },
+    {
+      "icon_id": "15262786",
+      "name": "1_music82",
+      "font_class": "1_music82",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "15262807",
+      "name": "1_music83",
+      "font_class": "1_music83",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "15262830",
+      "name": "1_music81",
+      "font_class": "1_music81",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "18921107",
+      "name": "music_pause",
+      "font_class": "music_pause",
+      "unicode": "e720",
+      "unicode_decimal": 59168
+    }
+  ]
+}

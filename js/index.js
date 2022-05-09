@@ -55,8 +55,8 @@ $(document).ready(function() {
         var key0 = $('#serch').val();
 
         if (e.key == 'Enter' && key0 != '') {
-            $('tbody').empty();
-            $('tbody').append(load2)
+            $('#musicPool tbody').empty();
+            $('#musicPool tbody').append(load2)
             sessionStorage.removeItem('songs2');
             sessionStorage.removeItem('lyric');
             $('.song-index').html(key0)

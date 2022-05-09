@@ -285,6 +285,9 @@ function serch(keywords) {
         return getSong(data.result.songs);
 
     }).then(data => {
+        $('#musicPool tbody').empty();
+
+
         // $('.load2').addClass('waiting')
         for (let x in data) {
             var song = songList(data[x], 1 + eval(x));
