@@ -382,10 +382,7 @@ $(document).ready(function() {
         lyrics(_id)
     });
 
-    $('.main_bar').click(function(e) {
-        $('#login-bar').removeClass('show')
 
-    })
 
 
 });
@@ -570,4 +567,9 @@ $('.mv2').on('click', function() {
 })
 $('.loginout').on('click', () => {
     setCookie('userData', '', 0)
+})
+$('body').click(() => {
+    if ($(e.target).attr('class') != 'notlogin') {
+        $('#login-bar').removeClass('show')
+    }
 })

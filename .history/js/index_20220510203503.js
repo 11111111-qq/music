@@ -382,9 +382,11 @@ $(document).ready(function() {
         lyrics(_id)
     });
 
-    $('.main_bar').click(function(e) {
-        $('#login-bar').removeClass('show')
-
+    $('body').click(() => {
+        alert(4)
+        if ($(e.target).attr('class') != 'notlogin') {
+            $('#login-bar').removeClass('show')
+        }
     })
 
 

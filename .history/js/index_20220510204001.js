@@ -382,7 +382,7 @@ $(document).ready(function() {
         lyrics(_id)
     });
 
-    $('.main_bar').click(function(e) {
+    $('.main_bar,.main_cont').click(function(e) {
         $('#login-bar').removeClass('show')
 
     })
