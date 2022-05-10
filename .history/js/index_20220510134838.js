@@ -35,7 +35,7 @@ $(document).ready(function() {
             return false;
         })
         //搜索功能
-    $('#serch').on('keyup', e => {
+    $('#serch').bind('keyup', e => {
         var key0 = $('#serch').val();
 
         if (e.key == 'Enter' && key0 != '') {
