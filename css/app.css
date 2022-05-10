@@ -368,13 +368,13 @@ button img {
 
 .player {
   position: fixed;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
   color: white;
 }
 
 .player .row {
-  background-color: rgba(45, 45, 45, 0.8);
+  background-color: #575757;
   height: 80px;
 }
 
@@ -491,6 +491,22 @@ button img {
   -moz-border-radius: 100px;
   -ms-border-radius: 100px;
   -o-border-radius: 100px;
+}
+
+section.detail {
+  position: relative;
+  top: -8px;
+  font-size: 12px;
+}
+
+section.detail span {
+  color: #b8b5b5;
+}
+
+section.detail span:nth-of-type(1) {
+  font-size: 15px;
+  color: #fafafa;
+  text-shadow: -1px -2px 3px rgba(17, 17, 17, 0.712);
 }
 
 .trl .iconfont {
@@ -990,6 +1006,7 @@ button img {
 }
 
 .nowMv {
+  position: absolute;
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -998,9 +1015,8 @@ button img {
   background: #7c7a7a;
   color: whitesmoke;
   text-align: center;
-  position: absolute;
-  left: 80px;
-  top: 72px;
+  left: 100px;
+  top: 60px;
   z-index: 200;
   border: 2px solid #b8b5b5;
   border-radius: 50%;
@@ -1011,8 +1027,9 @@ button img {
 }
 
 .nowMv.active {
-  left: 80px;
-  top: 72px;
+  position: absolute;
+  left: 100px;
+  top: 60px;
   animation: spark 1s ease-in infinite;
   -webkit-animation: spark 1s ease-in infinite;
 }
@@ -1146,9 +1163,9 @@ ul.mv-player li {
   height: 160px;
   margin-top: 5px;
   overflow: hidden;
-  color: lightgrey;
+  color: #615c5c;
   border-bottom: 1px solid lightgrey;
-  background-color: rgba(45, 45, 45, 0.8);
+  background-color: whitesmoke;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1428,6 +1445,152 @@ ul.mv-player li {
   top: 8px;
   text-align: center;
   width: 100%;
+}
+
+.main_bar {
+  position: relative;
+  float: left;
+  background-color: #b8b8b8 !important;
+  width: 150px !important;
+  height: 100%;
+  overflow: hidden;
+  -webkit-box-shadow: 0 0 5px 2px rgba(134, 133, 133, 0.3);
+          box-shadow: 0 0 5px 2px rgba(134, 133, 133, 0.3);
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.main_bar ul {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  left: -5px;
+}
+
+.main_bar li {
+  width: 100%;
+  margin-top: 5px;
+  opacity: .8;
+  text-align: center;
+}
+
+.main_bar li span {
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.main_bar li span:hover,
+.main_bar li span.active {
+  opacity: 1;
+  background-color: #cf4848;
+  color: white;
+}
+
+.main_bar button {
+  background-color: #f8f9fa !important;
+  width: 100% !important;
+}
+
+.main_bar .collapse {
+  position: relative;
+}
+
+.main_cont {
+  position: relative;
+  float: left;
+  width: calc(100% - 200px) !important;
+  margin-left: 10px;
+}
+
+.main_cont .tt {
+  width: 100%;
+  height: 500px;
+}
+
+.main_cont thead {
+  -webkit-box-shadow: 0 0 5px 2px rgba(134, 133, 133, 0.3);
+          box-shadow: 0 0 5px 2px rgba(134, 133, 133, 0.3);
+  position: absolute;
+  width: 100%;
+}
+
+.main_cont thead th {
+  text-align: center;
+}
+
+.main_cont thead th:nth-of-type(1) {
+  min-width: 50px;
+}
+
+.main_cont thead th:nth-of-type(2) {
+  max-width: 450px;
+}
+
+.main_cont thead th:nth-of-type(3) {
+  width: 100px;
+}
+
+.main_cont tbody {
+  height: 500px;
+  width: 100%;
+  position: absolute;
+  top: 45px;
+  overflow: scroll;
+}
+
+.main_cont tbody::-webkit-scrollbar {
+  display: none;
+}
+
+.main_cont tbody td {
+  top: 20px;
+  position: relative;
+  font-size: 12px;
+}
+
+.main_cont tbody td .song {
+  margin: 0 3px;
+}
+
+.main_cont tbody td .res {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.main_cont tbody td .icon-add {
+  top: 0px;
+  position: absolute;
+  display: inline-block;
+  font-size: 15px;
+  transition: all .1s linear;
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  -ms-transition: all .1s linear;
+  -o-transition: all .1s linear;
+}
+
+.main_cont tbody td .icon-add:hover {
+  font-size: 20px;
+  color: #1f9215;
+  top: -2px;
+}
+
+th {
+  text-align: center !important;
 }
 
 /*------------------------------------*\

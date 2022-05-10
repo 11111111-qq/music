@@ -112,3 +112,18 @@ function Aget(url, type = true) {
     })
     return p;
 }
+
+//对象的遍历
+function iterateThroughAllKeysAndValues(obj, keys, value) {
+    for (let key in obj) {
+        if (!obj.hasOwnProperty(key)) return; //排除掉原型继承而来的属性
+        if (obj[key]) {
+            if (obj[key] == value) {
+                return (obj)
+            }
+        }
+        if (typeof obj[key] == 'object') {
+            iterateThroughAllKeysAndValues(obj[key], value);
+        }
+    }
+}

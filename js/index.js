@@ -2,27 +2,11 @@
 //-------------------------index功能页----------------------------
 ///////////////////////////////////////////////////////////////
 $(document).ready(function() {
-    /*
-        *：
-        ?：
-        !：测试
-        TODO:
-        @param:
-        */
-    // $('#loaddata').load('https://baike.baidu.com/item/QQ', e => {
-    //         console.log(e)
-    //     })
     //登录检查
     loginCheck()
-        //初始化 
-
-    playerReset();
-    // document.body.style.overflow = 'hidden';
     $('#more').slideUp();
     $('.comment').slideUp();
     $('#musicPool').slideUp();
-    listsRecommand();
-    songsRecommand();
     //喜欢歌单功能
     //TODO:LIKE
     $('.login').on('click', 'div', function() {
@@ -60,7 +44,13 @@ $(document).ready(function() {
             sessionStorage.removeItem('songs2');
             sessionStorage.removeItem('lyric');
             $('.song-index').html(key0)
-            serch(key0)
+            app.serchSongs(key0).then(data => {
+                $('#musicPool tbody').empty();
+                for (let x in data) {
+                    var song = songList(data[x], 1 + eval(x));
+                    $('#musicPool tbody').append(song)
+                }
+            });
             $('#musicPool').slideDown();
             $('#musicPool h5').html(key0);
             $('#serch').val('');
@@ -72,19 +62,23 @@ $(document).ready(function() {
     });
     $('#list').on('click', 'span', function() {
         var keyword = $(this).html();
-        serch(keyword);
-        $('tbody').empty();
-        $('tbody').append(load2)
-        sessionStorage.removeItem('songs2');
-        sessionStorage.removeItem('lyric');
-        $('.song-index').html(keyword)
+        $('#musicPool tbody').empty();
+        $('#musicPool tbody').append(load2)
         $('#musicPool').slideDown();
         $('#musicPool h5').html(keyword);
+        app.serchSongs(keyword).then(data => {
+            $('#musicPool tbody').empty();
+            for (let x in data) {
+                var song = songList(data[x], eval(x));
+                $('#musicPool tbody').append(song)
+            }
+        });
+
+        $('.song-index').html(keyword)
+
         $('#serch').val('')
         var ul = document.getElementById("list");
         ul.style.display = "none";
-        return false;
-
         return false;
     });
     $('.row').on('click', 'span.badge', function() {
@@ -101,6 +95,40 @@ $(document).ready(function() {
         songPlayer(_id);
         lyrics(_id)
     });
+    $('.main_cont').on('click', 'td', function() {
+        var type = $('.main_cont tbody').attr('type');
+        var _id = $(this).attr('data-id');
+        console.log('a', type, _id);
+        if (type == 'song') {
+            songPlayer(_id);
+            lyrics(_id)
+        }
+        if (type == 'singer') {
+            $('#musicPool tbody').empty();
+            $('#musicPool').slideDown();
+            $('#musicPool h5').html($(this).html());
+            $('#musicPool tbody').append(load2)
+            app.getSingerSong(_id).then(data => {
+                $('#musicPool tbody').empty();
+                for (let x in data) {
+                    var song = songList(data[x], eval(x));
+                    $('#musicPool tbody').append(song)
+                }
+            })
+        }
+        if (type == 'list') {
+            songPlayer(_id);
+            lyrics(_id)
+        }
+        if (type == 'mv') {
+
+        }
+
+    });
+
+
+
+
     $('.poolclose').click(() => {
         $('#musicPool').slideUp();
     });
@@ -128,53 +156,22 @@ $(document).ready(function() {
             if ($(ad).length == 0 || type) {
                 var detailURL = domain + '/song/url?id=' + id;
                 var song;
-                if (JSON.parse(sessionStorage.getItem('songs2')) != null && JSON.parse(sessionStorage.getItem('songs2'))[id]) {
-                    song = JSON.parse(sessionStorage.getItem('songs2'))[id];
-                } else if (JSON.parse(sessionStorage.getItem('singersongs')) != null && JSON.parse(sessionStorage.getItem('singersongs'))[id]) {
-                    song = JSON.parse(sessionStorage.getItem('singersongs'))[id]
-                } else if (JSON.parse(sessionStorage.getItem('songsRecommend')) != null && JSON.parse(sessionStorage.getItem('songsRecommend'))[id]) {
-                    song = JSON.parse(sessionStorage.getItem('songsRecommend'))[id]
-                } else if (JSON.parse(sessionStorage.getItem('songslike')) != null && JSON.parse(sessionStorage.getItem('songslike'))[id]) {
-                    song = JSON.parse(sessionStorage.getItem('songslike'))[id]
-                } else {
-                    song = JSON.parse(sessionStorage.getItem('listsongs'))[id]
-                }
-                sessionStorage.removeItem('songs3') ? sessionStorage.removeItem('songs3') : '';
-
-
-                $('img.port').attr('src', song.pic)
-                $('section.detail').children('span').eq(0).html(song.name)
-                $('section.detail').children('span').eq(1).html(' - ' + song.singer)
-                $('section.detail').children('span').eq(2).html(' - 《' + song.al + '》')
-                $('.allTime').html(song.time)
-                    // console.log(song)
-                    //歌手mv
-                getMV(song.singerID)
-                    //歌手mv
-                    //相似歌曲
-                singerSongs(song.singerID)
-
-                function p1(x) {
-                    let p = new Promise((v, f) => {
-                        $.post(x, e => {
-                            // console.log(e)
-                            v(e);
-                        });
-                    })
-                    return p;
-                }
-                p1(detailURL).then(e => {
-                    var url = e.data[0].url;
-                    if (!url) {
-                        url = 'https://music.163.com/song/media/outer/url?id=' + id + '.mp3'
-                    }
-                    $('#music').attr('src', url);
-
-
+                app.getSonglists(id).then(song => {
+                    song = song[1];
+                    $('img.port').attr('src', song.pic)
+                    $('section.detail').children('span').eq(0).html(song.name)
+                    $('section.detail').children('span').eq(1).html(' - ' + song.singer)
+                    $('section.detail').children('span').eq(2).html(' - 《' + song.al + '》')
+                    $('.allTime').html(song.time)
+                    getMV(song.singerID);
+                    singerSongs(song.singerID)
                     if ($(ad).length == 0) {
-                        addMeun(id);
+                        addMeun(song);
                     }
-
+                })
+                app.getSongURL(id).then(url => {
+                    // console.log(url)
+                    $('#music').attr('src', url);
                     if (type) {
                         $('i.play').click();
                         $('i.play').click();
@@ -188,6 +185,7 @@ $(document).ready(function() {
                     $('.meun ul li').removeClass('on');
                     $('.meun ul li[data-id=' + id + ']').toggleClass('on text-light')
                 })
+
             } else {
                 $('i.play').click();
 
@@ -296,7 +294,7 @@ $(document).ready(function() {
         var t2 = timeFormat(t1 * 1000)
         $('span.now').html(t2);
         $('.lrics .progress').css('width', mus.currentTime / mus.duration * 100 + '%');
-        var lr = JSON.parse(sessionStorage.getItem('lyric'));
+        var lr = JSON.parse(sessionStorage.getItem('all')).lyrics;
         if (lr) {
             var c = '';
             for (let x in lr) {
@@ -341,9 +339,7 @@ $(document).ready(function() {
                 $('.row .port.mt-1').append($('<span class="nowMv active iconfont icon-video" data-bs-toggle="offcanvas" data-bs-target="#mvplayer"></span>'))
             } else {
                 $('.nowMv').addClass('active');
-
             }
-
         })
         .on('pause', function() {
             $('.nowMv').removeClass('active');
@@ -374,7 +370,9 @@ $(document).ready(function() {
         // 
         //登录处理
         //
-    $('.submit').click(login)
+    $('.submit').click(() => {
+            app.login($('#name').val(), $('#password').val())
+        })
         //百科
     $('.baike').click(() => {
         $('#more').slideToggle(500);
@@ -382,21 +380,6 @@ $(document).ready(function() {
     $('span.com').click(() => {
         $('.comment').slideToggle(500)
         $('.com,.com2').toggleClass('active');
-    })
-
-
-
-    $('.main').on('click', 'li', function() {
-        $('tbody').empty();
-        $('tbody').append(load2)
-        var _id = $(this).attr('data-id');
-        // console.log(_id)
-        getReclists(_id)
-        $('#musicPool').slideToggle(500).addClass('show');
-    })
-
-    $('h4').click(() => {
-        console.log($('#a1').get(0).contentWindow)
     })
 
 
@@ -411,3 +394,182 @@ $(document).ready(function() {
 
 
 });
+
+//main
+
+//acoutn
+$('.wyy').on('click', '.list1', function() {
+    var _id = $(this).attr('data-id');
+    $('#musicPool tbody').empty();
+    $('#musicPool tbody').append(load2)
+    app.getListAll(_id).then(e => {
+        $('#musicPool tbody').empty();
+        var data = e.songs;
+        for (let x in data) {
+            var song = songList(data[x], 1 + eval(x));
+            $('#musicPool tbody').append(song);
+            $('#musicPool h5').html(e.dis.listname).attr('title', e.dis.listmore);
+        }
+    });
+    $('#musicPool').slideDown();
+
+})
+
+//main点击榜单
+$(".main_bar span").click(function() {
+    $(".main_bar span").removeClass('active')
+    $(this).toggleClass('active')
+})
+$(".main_bar button").click(function() {
+    $(".main_bar  div").removeClass('show')
+    $(this).parent().children('div').toggleClass('show')
+})
+$('ul.b1').on('click', 'span', function() {
+    var type = $(this).attr('type')
+    $('.main_cont tbody').empty();
+    $('.main_cont tbody').attr('type', '')
+
+    var _id = $(this).attr('data-id');
+    new Promise((v, f) => {
+        $('.main_cont tbody').append(load2)
+        app.hotSongsSort(type).then(f => {
+            v(f)
+            allSave('hotSongsSort', f)
+        });
+    }).then(a => {
+        $('.main_cont tbody').empty();
+        $('.main_cont tbody').attr('type', 'song')
+
+        var e = a.songs;
+        for (let x in e) {
+            var song = songList(e[x], eval(x));
+            $(app.initEle).append(song)
+        }
+    })
+    return false;
+})
+$('ul.b2').on('click', 'span', function() {
+    var type = $(this).attr('type')
+    $('.main_cont tbody').empty();
+    $('.main_cont tbody').attr('type', '')
+
+    var _id = $(this).attr('data-id');
+    new Promise((v, f) => {
+        $('.main_cont tbody').append(load2)
+        app.hotSingersSort(type).then(f => {
+            v(f)
+            allSave('hotSingersSort', f)
+        });
+    }).then(a => {
+        $('.main_cont tbody').empty();
+        $('.main_cont tbody').attr('type', 'singer')
+
+        var e = a;
+        for (let x in e) {
+            var song = singerList(e[x], eval(x));
+            $(app.initEle).append(song)
+        }
+    })
+    return false;
+})
+$('.userList').on('click', function() {
+    var type = $(this).attr('type')
+    $('.main_cont tbody').empty();
+    $('.main_cont tbody').attr('type', '')
+
+    var _id = $(this).attr('data-id');
+    new Promise((v, f) => {
+        $('.main_cont tbody').append(load2)
+        app.userListsRecommand().then(f => {
+            v(f)
+            allSave('userListsRecommand', f)
+        });
+    }).then(a => {
+        $('.main_cont tbody').empty();
+        $('.main_cont tbody').attr('type', 'list')
+
+        var e = a.songs;
+        for (let x in e) {
+            var song = songList(e[x], eval(x));
+            $(app.initEle).append(song)
+        }
+    })
+    return false;
+})
+
+$('.userRec').on('click', function() {
+    var type = $(this).attr('type')
+    $('.main_cont tbody').empty();
+    $('.main_cont tbody').attr('type', '')
+
+    var _id = $(this).attr('data-id');
+    new Promise((v, f) => {
+        $('.main_cont tbody').append(load2)
+        $('.main_cont tbody').attr('type', 'song')
+
+        app.userSongsReccommand().then(f => {
+            v(f)
+            allSave('userSongsReccommand', f)
+        });
+    }).then(a => {
+        $('.main_cont tbody').empty();
+        var e = a.songs;
+        for (let x in e) {
+            var song = songList(e[x], eval(x));
+            $(app.initEle).append(song)
+        }
+    })
+    return false;
+})
+
+$('.mv1').on('click', function() {
+    var type = $(this).attr('type')
+    $('.main_cont tbody').empty();
+    $('.main_cont tbody').attr('type', '')
+
+    var _id = $(this).attr('data-id');
+    new Promise((v, f) => {
+        $('.main_cont tbody').append(load2)
+        app.hotMvSort().then(f => {
+            // console.log(f)
+            v(f)
+            allSave('hotMvSort', f)
+        });
+    }).then(a => {
+        // console.log(a)
+        $('.main_cont tbody').attr('type', 'mv')
+
+        $('.main_cont tbody').empty();
+        var e = a;
+        for (let x in e) {
+            var song = mvList(e[x], eval(x));
+            $(app.initEle).append(song)
+        }
+    });
+    return false;
+})
+$('.mv2').on('click', function() {
+    var type = $(this).attr('type')
+    $('.main_cont tbody').empty();
+    $('.main_cont tbody').attr('type', '')
+    var _id = $(this).attr('data-id');
+    new Promise((v, f) => {
+        $('.main_cont tbody').append(load2)
+        app.hotMvNew().then(f => {
+            // console.log(f)
+            v(f)
+            allSave('hotMvSort', f)
+        });
+    }).then(a => {
+        // console.log(a)
+        $('.main_cont tbody').attr('type', 'mv')
+
+        $('.main_cont tbody').empty();
+        var e = a;
+        for (let x in e) {
+            var song = mvList(e[x], eval(x));
+            $(app.initEle).append(song)
+        }
+    });
+    return false;
+})
